@@ -1,0 +1,43 @@
+
+import java.util.*;
+
+class Task4_9 {
+    public static int[][] matrixBlockSum(int[][] mat, int K) {
+        int m = mat.length, n = mat[0].length;
+        int[][] sum = new int[m + 1][n + 1]; 
+        for (int r = 1; r <= m; r++) {
+            for (int c = 1; c <= n; c++) {
+                sum[r][c] = mat[r - 1][c - 1] + sum[r - 1][c] + sum[r][c - 1] - sum[r - 1][c - 1];
+            }
+        }
+        int[][] ans = new int[m][n];
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                int r1 = Math.max(0, r - K), c1 = Math.max(0, c - K);
+                int r2 = Math.min(m - 1, r + K), c2 = Math.min(n - 1, c + K);
+                r1++; c1++; r2++; c2++; 
+                ans[r][c] = sum[r2][c2] - sum[r2][c1-1] - sum[r1-1][c2] + sum[r1-1][c1-1];
+            }
+        }
+        return ans;
+    }
+    
+    public static void main(String[] args) {
+    	Scanner sc = new Scanner(System.in);
+    	int n = sc.nextInt();
+    	int[][] nums = new int[n][n];
+    	
+    	for(int i =0; i<n; i++) {
+    		for(int j=0; j<n; j++) {
+    			nums[i][j] = sc.nextInt();
+    		}
+    	}
+    	int k =sc.nextInt();
+    	
+    	matrixBlockSum(nums, k);
+    	
+    	for(int i = 0; i<n; i++) {
+    		System.out.println(nums[i] + " ");
+    	}
+    }
+}
